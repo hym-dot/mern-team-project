@@ -1,15 +1,17 @@
-.TodoEditor{
+.BucketForm {
     display: flex;
     gap: 10px;
 }
-.TodoEditor input{
+
+.BucketForm input {
     flex: 1;
     padding: 15px;
-    border:1px solid #eee;
+    border: 1px solid #eee;
     border-radius: 5px;
 }
-.TodoEditor button{
-    border:1px solid #eee;
+
+.BucketForm button {
+    border: 1px solid #eee;
     border-radius: 5px;
     cursor: pointer;
     color: #fff;

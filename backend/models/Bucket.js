@@ -1,13 +1,8 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 const bucketSchema = new mongoose.Schema(
     {
-        name: {
-            type: String,
-            required: true,
-            trim: true
-        },
-        goal: {
+        text: {
             type: String,
             required: true,
             trim: true
@@ -22,9 +17,8 @@ const bucketSchema = new mongoose.Schema(
         }
     },
     { timestamps: true }
-)
+);
 
+const Bucket = mongoose.model("Bucket", bucketSchema);
 
-const Bucket = mongoose.model("Bucket", bucketSchema)
-
-module.exports = Bucket
+module.exports = Bucket;

@@ -7,39 +7,38 @@ import BucketList from './components/BucketList'
 
 function App() {
 
-  const [buckets, setBuckets] = useState([])
-  const API = `${import.meta.env.VITE_API_URL}/api/buckets`
+  const [todos, setTodos] = useState([])
+  const API = `${import.meta.env.VITE_API_URL}/api/todos`
 
   useEffect(() => {
-    const fetchBuckets = async () => {
+    const fetchTodos = async () => {
       try {
         const res = await axios.get(API)
-        const data = Array.isArray(res.data) ?
-          res.data : res.data.buckets ?? []
+        const data = Array.isArray(res.data) ? res.data : res.data.todos ?? []
 
-        setBuckets(data)
+        setTodos(data)
         console.log(data)
 
       } catch (error) {
         console.log("가져오기 실패", error)
       }
     }
-    fetchBuckets()
+    fetchTodos()
   }, [])
 
-
-  const onCreate = async (bucketText) => {
-    if (!bucketText.trim()) return
+  const onCreate = async (todoText) => {
+    if (!todoText.trim()) return
 
     try {
-      const res = await axios.post(API, { text: bucketText.trim() })
 
-      const created = res.data?.bucket ?? res.data
+      const res = await axios.post(API, { text: todoText.trim() })
 
-      if (Array.isArray(res.data?.buckets)) {
-        setBuckets(res.data.buckets)
+      const created = res.data?.todo ?? res.data
+
+      if (Array.isArray(res.data?.todos)) {
+        setTodos(res.data.todos)
       } else {
-        setBuckets(prev => [created, ...prev])
+        setTodos(prev => [created, ...prev])
       }
 
     } catch (error) {
@@ -53,13 +52,13 @@ function App() {
 
       const { data } = await axios.delete(`${API}/${id}`)
 
-      if (Array.isArray(data?.buckets)) {
-        setBuckets(data.buckets)
+      if (Array.isArray(data?.todos)) {
+        setTodos(data.todos)
         return
       }
 
-      const deletedId = data?.deletedId ?? data?.bucket?._id ?? data?._id ?? id
-      setBuckets((prev) => prev.filter((t) => t._id !== deletedId))
+      const deletedId = data?.deletedId ?? data?.todo?._id ?? data?._id ?? id
+      setTodos((prev) => prev.filter((t) => t._id !== deletedId))
     } catch (error) {
       console.error("삭제 실패", error)
     }
@@ -68,8 +67,8 @@ function App() {
   return (
     <div className='App'>
       <Header />
-      <BucketForm onCreate={onCreate}/>
-      <BucketList buckets={buckets} onDelete={onDelete}/>
+      <BucketForm onCreate={onCreate} />
+      <BucketList todos={todos} onDelete={onDelete} />
     </div>
   )
 }
