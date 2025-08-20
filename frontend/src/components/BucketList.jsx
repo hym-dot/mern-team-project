@@ -1,15 +1,15 @@
 import React from 'react'
-import './TodoList.css'
-import TodoItem from './TodoItem'
-const TodoList = ({todos,onDelete}) => {
+import './BucketList.css'
+import BucketItem from './BucketItem'
+const BucketList = ({todos,onDelete}) => {
   return (
-    <div className='TodoList'>
-        <h4>Todo List 🌱</h4>
+    <div className='BucketList'>
+        <h4>Bucket List 🌱</h4>
         <input type="text" placeholder='검색어를 입력하세요' />
         <div className="todos-wrapper">
           {todos.map((todo,i)=>(
 
-            <TodoItem key={i} todo={todo} onDelete={onDelete}/>
+            <BucketItem key={i} todo={todo} onDelete={onDelete}/>
           ))}
         
         </div>
@@ -17,4 +17,4 @@ const TodoList = ({todos,onDelete}) => {
   )
 }
 
-export default TodoList
+export default BucketList

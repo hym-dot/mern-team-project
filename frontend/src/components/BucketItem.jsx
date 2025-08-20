@@ -1,8 +1,8 @@
 import React from 'react'
-import "./TodoItem.css"
-const TodoItem = ({todo ,onDelete}) => {
+import "./BucketItem.css"
+const BucketItem = ({todo ,onDelete}) => {
   return (
-    <div className='TodoItem'>
+    <div className='BucketItem'>
         <input type="checkbox" readOnly/>
         <div className="content">{todo.text}</div>
         <div className="date">{new Date(`${todo.date}`).toLocaleDateString()}</div>
@@ -16,4 +16,4 @@ const TodoItem = ({todo ,onDelete}) => {
   )
 }
 
-export default TodoItem
+export default BucketItem

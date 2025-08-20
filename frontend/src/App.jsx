@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react'
 import axios from "axios"
 import './App.css'
 import Header from './components/Header'
-import TodoEditor from './components/TodoEditor'
-import TodoList from './components/TodoList'
+import BucketForm from './components/BucketForm'
+import BucketList from './components/BucketList'
+
 function App() {
 
   const [todos, setTodos] = useState([])
@@ -13,8 +14,7 @@ function App() {
     const fetchTodos = async () => {
       try {
         const res = await axios.get(API)
-        const data = Array.isArray(res.data) ?
-          res.data : res.data.todos ?? []
+        const data = Array.isArray(res.data) ? res.data : res.data.todos ?? []
 
         setTodos(data)
         console.log(data)
@@ -26,7 +26,6 @@ function App() {
     fetchTodos()
   }, [])
 
-
   const onCreate = async (todoText) => {
     if (!todoText.trim()) return
 
@@ -34,42 +33,42 @@ function App() {
 
       const res = await axios.post(API, { text: todoText.trim() })
 
-      const created = res.data?.todo?? res.data
+      const created = res.data?.todo ?? res.data
 
-      if(Array.isArray(res.data?.todos)){
+      if (Array.isArray(res.data?.todos)) {
         setTodos(res.data.todos)
-      }else {
-        setTodos(prev=>[created, ...prev])
+      } else {
+        setTodos(prev => [created, ...prev])
       }
 
     } catch (error) {
-      console.log("추가 실패",error)
+      console.log("추가 실패", error)
     }
   }
 
-  const onDelete = async(id)=>{
+  const onDelete = async (id) => {
     try {
-      if(!confirm("정말 삭제할까요?")) return
+      if (!confirm("정말 삭제할까요?")) return
 
-      const {data}=await axios.delete(`${API}/${id}`)
+      const { data } = await axios.delete(`${API}/${id}`)
 
-      if(Array.isArray(data?.todos)){
+      if (Array.isArray(data?.todos)) {
         setTodos(data.todos)
         return
       }
 
-      const deletedId = data?.deletedId?? data?.todo?._id ?? data?._id??id
-      setTodos((prev)=> prev.filter((t)=>t._id!==deletedId))
+      const deletedId = data?.deletedId ?? data?.todo?._id ?? data?._id ?? id
+      setTodos((prev) => prev.filter((t) => t._id !== deletedId))
     } catch (error) {
-      console.error("삭제 실패",error)
+      console.error("삭제 실패", error)
     }
   }
 
   return (
     <div className='App'>
       <Header />
-      <TodoEditor onCreate={onCreate}/>
-      <TodoList todos={todos} onDelete={onDelete}/>
+      <BucketForm onCreate={onCreate} />
+      <BucketList todos={todos} onDelete={onDelete} />
     </div>
   )
 }
