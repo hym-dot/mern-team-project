@@ -7,8 +7,11 @@ import BucketList from './components/BucketList'
 
 function App() {
 
+  
+
   const [todos, setTodos] = useState([])
-  const API = `${import.meta.env.VITE_API_URL}/api/todos`
+  const API = `${import.meta.env.VITE_API_URL}/api/buckets`;
+
 
   useEffect(() => {
     const fetchTodos = async () => {
