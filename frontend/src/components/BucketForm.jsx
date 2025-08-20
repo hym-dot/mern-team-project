@@ -16,7 +16,7 @@ const TodoEditor = ({ onCreate }) => {
     <form className='TodoEditor' onSubmit={onSubmit}>
       <input
         type="text"
-        placeholder='새로운 Todo...'
+        placeholder='새로운 Bucket...'
         value={text}
         onChange={(e) => setText(e.target.value)}
       />

@@ -1,24 +1,30 @@
 const mongoose = require("mongoose")
 
-const todoSchema = new mongoose.Schema(
+const bucketSchema = new mongoose.Schema(
     {
-        text:{
-            type:String,
-            required:true,
-            trim:true
+        name: {
+            type: String,
+            required: true,
+            trim: true
         },
-        isCompleted:{
-            type:Boolean,
-            default:false
+        goal: {
+            type: String,
+            required: true,
+            trim: true
         },
-        date:{
-            type:Date,
-            default:Date.now
+        isCompleted: {
+            type: Boolean,
+            default: false
+        },
+        date: {
+            type: Date,
+            default: Date.now
         }
     },
-    {timestamps:true}
+    { timestamps: true }
 )
 
-const Todo =mongoose.model("Todo",todoSchema)
 
-module.exports=Todo
+const Bucket = mongoose.model("Bucket", bucketSchema)
+
+module.exports = Bucket
