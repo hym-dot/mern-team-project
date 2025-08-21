@@ -1,10 +1,11 @@
 .header {
     text-align: center;
     margin-bottom: 20px;
+    
 }
 
 .title {
-    font-size: 2rem;
+    font-size: 4rem;
     margin-bottom: 10px;
 }
 
@@ -29,6 +30,7 @@
 }
 
 .user-btn.active {
+
     background: #333;
     color: #fff;
 }
