@@ -1,20 +1,27 @@
-.BucketForm {
-    display: flex;
-    gap: 10px;
+.bucket-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.BucketForm input {
-    flex: 1;
-    padding: 15px;
-    border: 1px solid #eee;
-    border-radius: 5px;
+.bucket-form input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
 }
 
-.BucketForm button {
-    border: 1px solid #eee;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #fff;
-    width: 80px;
-    background-color: rgb(37, 147, 255);
+.bucket-form button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.bucket-form button:hover {
+  background-color: #0056b3;
 }

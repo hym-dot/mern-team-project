@@ -1,9 +1,88 @@
+body {
+    font-family: 'Pretendard', sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
 
 .App {
-    width: 500px;
-    margin: 0 auto;
+    max-width: 600px;
+    margin: 40px auto;
+    background: pink;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+header {
+    text-align: center;
+}
+
+.user-list {
+    margin-top: 10px;
+}
+
+.user-btn {
+    background: palevioletred;
+    border: none;
+    padding: 8px 12px;
+    margin: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.user-btn:hover {
+    background: black;
+}
+
+.user-btn.active {
+    background: #333;
+    color: #fff;
+}
+
+.bucket-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.bucket-form input {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.bucket-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.bucket-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 30px;
+}
+
+.bucket-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding: 8px 0;
+}
+
+.bucket-item input {
+    flex: 1;
+    padding: 8px;
+    margin-right: 8px;
+}
+
+.btns button {
+    margin-left: 8px;
+}
+
+.empty-msg {
+    text-align: center;
+    color: #888;
 }

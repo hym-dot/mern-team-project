@@ -1,24 +1,23 @@
-import React from "react"
-import "./BucketList.css"
-import BucketItem from "./BucketItem"
+import React from 'react';
+import BucketItem from './BucketItem';
 
 const BucketList = ({ todos, onDelete, onUpdate }) => {
   return (
-    <div className="BucketList">
-      <h4>Bucket List 🌱</h4>
-      <input type="text" placeholder="검색어를 입력하세요" />
-      <div className="todos-wrapper">
-        {todos.map((todo) => (
+    <div className="bucket-list">
+      {todos.length === 0 ? (
+        <p className="empty-msg">버킷리스트가 없습니다.</p>
+      ) : (
+        todos.map(todo => (
           <BucketItem
             key={todo._id}
             todo={todo}
             onDelete={onDelete}
             onUpdate={onUpdate}
           />
-        ))}
-      </div>
+        ))
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default BucketList
+export default BucketList;

@@ -1,73 +1,62 @@
-import { useState, useEffect } from "react"
-import axios from "axios"
-import "./App.css"
-import Header from "./components/Header"
-import BucketForm from "./components/BucketForm"
-import BucketList from "./components/BucketList"
+import React, { useState } from 'react';
+import BucketForm from './components/BucketForm';
+import BucketList from './components/BucketList';
+import Header from './components/Header';
+import './App.css';
+
+const users = [
+  { uid: 'user1', name: '최선호' },
+  { uid: 'user2', name: '하다민' },
+  { uid: 'user3', name: '홍유민' },
+];
 
 function App() {
-  const [todos, setTodos] = useState([])
-  const API = `${import.meta.env.VITE_API_URL}/api/buckets`
+  const [todos, setTodos] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
 
-  // 📌 데이터 불러오기
-  useEffect(() => {
-    const fetchTodos = async () => {
-      try {
-        const res = await axios.get(API)
-        const data = Array.isArray(res.data) ? res.data : res.data.todos ?? []
-        setTodos(data)
-      } catch (error) {
-        console.error("가져오기 실패", error)
-      }
+  const onCreate = (text) => {
+    if (!selectedUser) {
+      alert('사용자를 먼저 선택해주세요.');
+      return;
     }
-    fetchTodos()
-  }, [])
 
-  // 📌 추가
-  const onCreate = async (todoText) => {
-    if (!todoText.trim()) return
-    try {
-      const res = await axios.post(API, { text: todoText.trim() })
-      const created = res.data?.todo ?? res.data
-      setTodos((prev) => [created, ...prev])
-    } catch (error) {
-      console.error("추가 실패", error)
-    }
-  }
+    const newTodo = {
+      _id: Date.now().toString(),
+      text,
+      uid: selectedUser.uid,
+    };
+    setTodos(prev => [newTodo, ...prev]);
+  };
 
-  // 📌 삭제
-  const onDelete = async (id) => {
-    try {
-      if (!confirm("정말 삭제할까요?")) return
-      const { data } = await axios.delete(`${API}/${id}`)
-      const deletedId = data?.deletedId ?? id
-      setTodos((prev) => prev.filter((t) => t._id !== deletedId))
-    } catch (error) {
-      console.error("삭제 실패", error)
-    }
-  }
+  const onDelete = (id) => {
+    setTodos(prev => prev.filter(todo => todo._id !== id));
+  };
 
-  // 📌 수정
-  const onUpdate = async (id, newText) => {
-    if (!newText.trim()) return
-    try {
-      const { data } = await axios.put(`${API}/${id}`, { text: newText.trim() })
-      const updated = data?.todo ?? data
-      setTodos((prev) =>
-        prev.map((t) => (t._id === id ? { ...t, ...updated } : t))
+  const onUpdate = (id, newText) => {
+    setTodos(prev =>
+      prev.map(todo =>
+        todo._id === id ? { ...todo, text: newText } : todo
       )
-    } catch (error) {
-      console.error("수정 실패", error)
-    }
-  }
+    );
+  };
+
+  const filteredTodos = selectedUser
+    ? todos.filter(todo => todo.uid === selectedUser.uid)
+    : todos;
 
   return (
     <div className="App">
-      <Header />
-      <BucketForm onCreate={onCreate} />
-      <BucketList todos={todos} onDelete={onDelete} onUpdate={onUpdate} />
+      <Header
+        users={users}
+        selectedUser={selectedUser}
+        onSelectUser={setSelectedUser}
+      />
+      <main>
+        <BucketForm onCreate={onCreate} />
+        <BucketList todos={filteredTodos} onDelete={onDelete} onUpdate={onUpdate} />
+      </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

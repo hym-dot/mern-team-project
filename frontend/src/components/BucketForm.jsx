@@ -1,28 +1,26 @@
-import React, { useState } from 'react'
-import "./BucketForm.css"
+import React, { useState } from 'react';
+
 const BucketForm = ({ onCreate }) => {
-  const [text, setText] = useState("")
+  const [input, setInput] = useState('');
 
-  const onSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+    onCreate(input);
+    setInput('');
+  };
 
-    if (!text.trim()) return
-
-    onCreate(text.trim())
-    setText("")
-
-  }
   return (
-    <form className='BucketForm' onSubmit={onSubmit}>
+    <form className="bucket-form" onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder='새로운 Bucket...'
-        value={text}
-        onChange={(e) => setText(e.target.value)}
+        placeholder="하고 싶은 것을 입력하세요"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
       />
-      <button type='submit' disabled={!text.trim()}>추가</button>
+      <button type="submit">추가</button>
     </form>
-  )
-}
+  );
+};
 
-export default BucketForm
+export default BucketForm;
