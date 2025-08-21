@@ -4,7 +4,7 @@ import './Header.css';
 const Header = ({ users, selectedUser, onSelectUser }) => {
   return (
     <header className="header">
-      <h1 className="title">🌟 익명 버킷리스트🚀</h1>
+      <h1 className="title">🌟 버킷리스트🚀</h1>
       <div className="user-list">
         {users.map(user => (
           <button

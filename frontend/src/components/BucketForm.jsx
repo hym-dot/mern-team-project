@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
-import './BucketForm.css';
+import React, { useState } from "react";
+import "./BucketForm.css";
 
-const BucketForm = ({ onCreate }) => {
-  const [input, setInput] = useState('');
+const BucketForm = ({ onCreate, selectedUser }) => {
+  const [input, setInput] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!selectedUser) {
+      alert("사용자를 먼저 선택해주세요.");
+      return;
+    }
     if (!input.trim()) return;
     onCreate(input);
-    setInput('');
+    setInput("");
   };
 
   return (
@@ -19,7 +23,9 @@ const BucketForm = ({ onCreate }) => {
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
-      <button type="submit" className="btn-add">추가</button>
+      <button type="submit" className="btn-add">
+        추가
+      </button>
     </form>
   );
 };
