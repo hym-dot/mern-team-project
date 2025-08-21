@@ -5,7 +5,7 @@ const BucketList = ({ todos, onDelete, onUpdate }) => {
   return (
     <div className="bucket-list">
       {todos.length === 0 ? (
-        <p className="empty-msg">버킷리스트가 없습니다.</p>
+        <p className="empty-msg">버킷리스트 입력해주세요!!!</p>
       ) : (
         todos.map(todo => (
           <BucketItem

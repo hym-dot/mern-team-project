@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './BucketForm.css';
 
 const BucketForm = ({ onCreate }) => {
   const [input, setInput] = useState('');
@@ -18,7 +19,7 @@ const BucketForm = ({ onCreate }) => {
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
-      <button type="submit">추가</button>
+      <button type="submit" className="btn-add">추가</button>
     </form>
   );
 };

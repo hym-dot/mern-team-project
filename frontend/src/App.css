@@ -3,7 +3,9 @@
 
 body {
     font-family: 'Dongle', sans-serif;
-    background: #f4f4f4;
+    background: #f4f4f4 url('./assets/hand.jpg') no-repeat center center fixed;
+    background-size: 50% ;
+    background-color: #eee;
     margin: 0;
     padding: 0;
 }
@@ -26,6 +28,8 @@ header {
 }
 
 .user-btn {
+    font-family: 'Dongle', sans-serif;
+    font-size: 2rem;
     background: palevioletred;
     border: none;
     padding: 8px 12px;
@@ -33,10 +37,11 @@ header {
     border-radius: 8px;
     cursor: pointer;
     transition: 0.2s;
+    box-shadow:4px 5px rgba(0, 0, 0, 0.6) ;
 }
 
 .user-btn:hover {
-    background: black;
+    background: rgba(0, 0, 0, 0.747);
 }
 
 .user-btn.active {
