@@ -23,6 +23,10 @@ mongoose
 const bucketRoutes = require('./routes/bucketRoutes');
 app.use('/api/buckets', bucketRoutes);
 
+// authRoutes 추가
+const authRoutes = require('./routes/authRoutes');
+app.use('/api/auth', authRoutes);
+
 // 기본 라우트
 app.get('/', (req, res) => {
     res.send("Hello Express");
