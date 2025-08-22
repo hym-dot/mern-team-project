@@ -3,7 +3,8 @@
 body {
     font-family: 'Dongle', sans-serif;
     background: #f4f4f4 url('./assets/hand.jpg') no-repeat center center fixed;
-    background-size: contain;
+    background-size: cover;
+    background-attachment: scroll;
     background-color: #eee;
     margin: 0;
     padding: 0;
@@ -16,6 +17,7 @@ body {
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+
 }
 
 header {
