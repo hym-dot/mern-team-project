@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 dotenv.config();
 
@@ -9,11 +10,15 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cookieParser());
+
+// CORS 설정
 app.use(cors({
-    origin: process.env.FRONT_ORIGIN,
+    origin: process.env.FRONT_ORIGIN, // 프론트 도메인
     credentials: true
 }));
 
+// MongoDB 연결
 mongoose
     .connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB 연결 성공"))
@@ -32,6 +37,10 @@ app.get('/', (req, res) => {
     res.send("Hello Express");
 });
 
+// health check 라우트 추가
+app.get('/healthz', (_req, res) => res.sendStatus(200));
+
+// 서버 실행
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
