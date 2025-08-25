@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import BucketForm from "./components/BucketForm";
 import BucketList from "./components/BucketList";
 import Header from "./components/Header";
+import { api, ensureGuestAuth } from './lib/api';   // <-- 추가
 import "./App.css";
 
 const users = [
