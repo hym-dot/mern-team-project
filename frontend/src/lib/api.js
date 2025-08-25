@@ -1,32 +1,36 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // 예: https://your-backend.cloudtype.app
-  withCredentials: true, // 쿠키 포함
+  baseURL: import.meta.env.VITE_API_URL, // 백엔드 주소를 환경변수로 설정
+  withCredentials: true, // 쿠키 포함 요청
 });
 
 let isAuthing = false;
 
-// 응답 인터셉터: 401일 때 게스트 로그인 후 재시도
+// 응답 인터셉터: 401 Unauthorized 발생 시 게스트 인증 후 재시도
 api.interceptors.response.use(
-  (res) => res,
-  async (err) => {
-    if (err?.response?.status === 401 && !isAuthing) {
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error?.response?.status === 401 && !isAuthing) {
       try {
         isAuthing = true;
-        await ensureGuestAuth(); // 아래 함수 실행
+        await ensureGuestAuth();
         isAuthing = false;
-        return api.request(err.config); // 실패했던 요청 재시도
-      } catch (e) {
+
+        // 실패한 요청 다시 시도
+        return api.request(originalRequest);
+      } catch (err) {
         isAuthing = false;
-        return Promise.reject(e);
+        return Promise.reject(err);
       }
     }
-    return Promise.reject(err);
+
+    return Promise.reject(error);
   }
 );
 
-// ✅ 게스트 인증 함수
 export async function ensureGuestAuth() {
   let deviceId = localStorage.getItem('deviceId');
 
@@ -37,8 +41,8 @@ export async function ensureGuestAuth() {
     localStorage.setItem('deviceId', deviceId);
   }
 
-  // guest 인증 요청
   try {
+    // 백엔드가 deviceId를 사용하지 않는다면 비워도 무방합니다.
     await api.post('/api/auth/guest', { deviceId });
   } catch (err) {
     console.error('🔒 게스트 인증 실패:', err);

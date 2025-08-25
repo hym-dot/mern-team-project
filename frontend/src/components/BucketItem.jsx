@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./BucketItem.css";
 
 const BucketItem = ({ todo, onDelete, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(todo.text);
 
+  // todo.text가 바뀌면 editText도 업데이트 (중요)
+  useEffect(() => {
+    setEditText(todo.text);
+  }, [todo.text]);
+
   const handleSave = () => {
-    if (editText.trim()) {
-      onUpdate(todo._id, editText.trim());
-      setIsEditing(false);
+    if (!editText.trim()) {
+      alert("빈 값은 저장할 수 없습니다.");
+      return;
     }
+    onUpdate(todo._id, editText.trim());
+    setIsEditing(false);
   };
 
   return (
@@ -19,6 +26,7 @@ const BucketItem = ({ todo, onDelete, onUpdate }) => {
           <input
             value={editText}
             onChange={(e) => setEditText(e.target.value)}
+            autoFocus
           />
           <button className="btn btn-save" onClick={handleSave}>
             저장

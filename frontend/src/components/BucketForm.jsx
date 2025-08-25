@@ -5,15 +5,17 @@ const BucketForm = ({ onCreate, selectedUser }) => {
   const [input, setInput] = useState("");
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!selectedUser) {
-      alert("사용자를 먼저 선택해주세요.");
-      return;
-    }
-    if (!input.trim()) return;
-    onCreate(input);
-    setInput("");
-  };
+  e.preventDefault();
+  if (!selectedUser) {
+    alert("사용자를 먼저 선택해주세요.");
+    return;
+  }
+  if (!input.trim()) return;
+
+  console.log("onCreate 호출, 입력값:", input);
+  onCreate(input);
+  setInput("");
+};
 
   return (
     <form className="bucket-form" onSubmit={handleSubmit}>
