@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import BucketForm from "./components/BucketForm";
 import BucketList from "./components/BucketList";
 import Header from "./components/Header";
-import { api, ensureGuestAuth } from './lib/api';   // <-- 추가
+import { api } from './lib/api';  // ensureGuestAuth는 api 인터셉터 내에서 자동 호출되니 따로 호출하지 않음
 import "./App.css";
 
 const users = [
@@ -14,8 +14,6 @@ const users = [
 function App() {
   const [todos, setTodos] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-
-  const API_URL = "http://localhost:3000/api/buckets";
 
   // ✅ 사용자 정보 로컬스토리지에서 불러오기
   useEffect(() => {
@@ -31,12 +29,11 @@ function App() {
     localStorage.setItem("selectedUser", JSON.stringify(user));
   };
 
-  // ✅ 전체 데이터 불러오기
+  // ✅ 전체 데이터 불러오기 (axios api 사용)
   useEffect(() => {
-    fetch(API_URL)
-      .then((res) => res.json())
-      .then((data) => setTodos(data))
-      .catch((err) => console.error("데이터 불러오기 실패:", err));
+    api.get('/api/buckets')
+      .then(res => setTodos(res.data))
+      .catch(err => console.error("데이터 불러오기 실패:", err));
   }, []);
 
   const onCreate = (text) => {
@@ -50,42 +47,32 @@ function App() {
       isCompleted: false,
     };
 
-    fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newBucket),
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    api.post('/api/buckets', newBucket)
+      .then(res => {
+        const data = res.data;
         if (!data.uid) data.uid = selectedUser.uid;
-        setTodos((prev) => [data, ...prev]);
+        setTodos(prev => [data, ...prev]);
       })
-      .catch((err) => console.error("버킷 생성 실패:", err));
+      .catch(err => console.error("버킷 생성 실패:", err));
   };
 
   const onDelete = (id) => {
-    fetch(`${API_URL}/${id}`, { method: "DELETE" })
-      .then(() => setTodos((prev) => prev.filter((t) => t._id !== id)))
-      .catch((err) => console.error("삭제 실패:", err));
+    api.delete(`/api/buckets/${id}`)
+      .then(() => setTodos(prev => prev.filter(t => t._id !== id)))
+      .catch(err => console.error("삭제 실패:", err));
   };
 
   const onUpdate = (id, newText) => {
-    fetch(`${API_URL}/${id}/text`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: newText }),
-    })
-      .then((res) => res.json())
-      .then((data) =>
-        setTodos((prev) =>
-          prev.map((t) => (t._id === id ? data.bucket : t))
-        )
-      )
-      .catch((err) => console.error("수정 실패:", err));
+    api.patch(`/api/buckets/${id}/text`, { text: newText })
+      .then(res => {
+        const updatedBucket = res.data.bucket;
+        setTodos(prev => prev.map(t => (t._id === id ? updatedBucket : t)));
+      })
+      .catch(err => console.error("수정 실패:", err));
   };
 
   const filteredTodos = selectedUser
-    ? todos.filter((t) => t.uid === selectedUser.uid)
+    ? todos.filter(t => t.uid === selectedUser.uid)
     : [];
 
   return (
