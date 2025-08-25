@@ -4,7 +4,8 @@ const bucketSchema = new mongoose.Schema(
     {
         name: { type: String, required: true, trim: true }, 
         goal: { type: String, required: true, trim: true },   
-        text: { type: String, trim: true },                  
+        text: { type: String, trim: true }, 
+        uid: { type: String, required: true },                 
         isCompleted: { type: Boolean, default: false },
         date: { type: Date, default: Date.now }
     },
