@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import BucketForm from "./components/BucketForm";
 import BucketList from "./components/BucketList";
 import Header from "./components/Header";
-import { api } from './lib/api';  // 인터셉터 포함 axios 인스턴스
+import { api } from './lib/api';
 import "./App.css";
 
 const users = [
@@ -15,7 +15,6 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  // 사용자 정보 로컬스토리지에서 불러오기
   useEffect(() => {
     const savedUser = localStorage.getItem("selectedUser");
     if (savedUser) {
@@ -23,13 +22,11 @@ function App() {
     }
   }, []);
 
-  // 사용자 선택 시 로컬스토리지에 저장
   const handleUserSelect = (user) => {
     setSelectedUser(user);
     localStorage.setItem("selectedUser", JSON.stringify(user));
   };
 
-  // 전체 데이터 불러오기 (axios api 사용)
   useEffect(() => {
     api.get('/api/buckets')
       .then(res => setTodos(res.data))
@@ -62,12 +59,13 @@ function App() {
       .catch(err => console.error("삭제 실패:", err));
   };
 
+  // ** 여기 핵심 수정 **
   const onUpdate = (id, newText) => {
     api.patch(`/api/buckets/${id}/text`, { text: newText })
       .then(res => {
-        const updatedBucket = res.data;
+        const updatedBucket = res.data.bucket;
         if (!updatedBucket) {
-          console.error("수정된 버킷 데이터가 없습니다.");
+          console.error("수정된 데이터가 없습니다!", res.data);
           return;
         }
         setTodos(prev => prev.map(t => (t._id === id ? updatedBucket : t)));
@@ -81,18 +79,10 @@ function App() {
 
   return (
     <div className="App">
-      <Header
-        users={users}
-        selectedUser={selectedUser}
-        onSelectUser={handleUserSelect} 
-      />
+      <Header users={users} selectedUser={selectedUser} onSelectUser={handleUserSelect} />
       <main>
         <BucketForm onCreate={onCreate} selectedUser={selectedUser} />
-        <BucketList
-          todos={filteredTodos}
-          onDelete={onDelete}
-          onUpdate={onUpdate}
-        />
+        <BucketList todos={filteredTodos} onDelete={onDelete} onUpdate={onUpdate} />
       </main>
     </div>
   );
