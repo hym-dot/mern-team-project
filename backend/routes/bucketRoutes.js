@@ -44,13 +44,13 @@ router.get("/:id", async (req, res) => {
             return res.status(404).json({ message: "해당 ID의 bucket이 없습니다." });
         }
 
-        res.status(200).json({ message: "1개 불러오기 성공", bucket });
+        res.status(200).json(bucket);
     } catch (error) {
         res.status(400).json({ error: "데이터를 불러오지 못했습니다." });
     }
 });
 
-// 수정
+// 수정 (PUT)
 router.put("/:id", async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
@@ -66,7 +66,7 @@ router.put("/:id", async (req, res) => {
             return res.status(404).json({ message: "해당 ID의 bucket이 없습니다." });
         }
 
-        res.status(200).json({ message: "1개 수정하기 성공", updated });
+        res.status(200).json(updated);
     } catch (error) {
         res.status(400).json({ error: "데이터를 불러오지 못했습니다." });
     }
@@ -118,13 +118,13 @@ router.patch("/:id/check", async (req, res) => {
             return res.status(404).json({ message: "해당 ID의 bucket이 없습니다." });
         }
 
-        res.status(200).json({ message: "체크상태 수정 성공", bucket: updated });
+        res.status(200).json(updated);
     } catch (error) {
         res.status(400).json({ error: "데이터를 불러오지 못했습니다." });
     }
 });
 
-// 텍스트 수정
+// 텍스트 수정 (PATCH)
 router.patch("/:id/text", async (req, res) => {
     const { id } = req.params;
     const { text } = req.body;
@@ -145,7 +145,8 @@ router.patch("/:id/text", async (req, res) => {
             return res.status(404).json({ message: "해당 ID의 bucket이 없습니다." });
         }
 
-        res.status(200).json({ message: "텍스트 수정 성공", bucket: updated });
+        // **수정: 응답을 단순히 updated 객체로 변경**
+        res.status(200).json(updated);
     } catch (error) {
         res.status(400).json({ error: "데이터를 불러오지 못했습니다." });
     }

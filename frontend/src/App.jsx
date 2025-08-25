@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import BucketForm from "./components/BucketForm";
 import BucketList from "./components/BucketList";
 import Header from "./components/Header";
-import { api } from './lib/api';  // ensureGuestAuth는 api 인터셉터 내에서 자동 호출되니 따로 호출하지 않음
+import { api } from './lib/api';  // 인터셉터 포함 axios 인스턴스
 import "./App.css";
 
 const users = [
@@ -15,7 +15,7 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  // ✅ 사용자 정보 로컬스토리지에서 불러오기
+  // 사용자 정보 로컬스토리지에서 불러오기
   useEffect(() => {
     const savedUser = localStorage.getItem("selectedUser");
     if (savedUser) {
@@ -23,13 +23,13 @@ function App() {
     }
   }, []);
 
-  // ✅ 사용자 선택 시 로컬스토리지에 저장
+  // 사용자 선택 시 로컬스토리지에 저장
   const handleUserSelect = (user) => {
     setSelectedUser(user);
     localStorage.setItem("selectedUser", JSON.stringify(user));
   };
 
-  // ✅ 전체 데이터 불러오기 (axios api 사용)
+  // 전체 데이터 불러오기 (axios api 사용)
   useEffect(() => {
     api.get('/api/buckets')
       .then(res => setTodos(res.data))
@@ -65,7 +65,11 @@ function App() {
   const onUpdate = (id, newText) => {
     api.patch(`/api/buckets/${id}/text`, { text: newText })
       .then(res => {
-        const updatedBucket = res.data.bucket;
+        const updatedBucket = res.data;
+        if (!updatedBucket) {
+          console.error("수정된 버킷 데이터가 없습니다.");
+          return;
+        }
         setTodos(prev => prev.map(t => (t._id === id ? updatedBucket : t)));
       })
       .catch(err => console.error("수정 실패:", err));
